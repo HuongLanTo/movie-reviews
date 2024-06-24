@@ -18,6 +18,10 @@ const Movie = (props) => {
     reviews: [],
   });
 
+  useEffect(() => {
+    getMovie(props.match.params.id);
+  }, [props.match.params.id]);
+
   const getMovie = (id) => {
     MovieDataService.getMovie(id)
       .then((res) => {
@@ -31,9 +35,20 @@ const Movie = (props) => {
       });
   };
 
-  useEffect(() => {
-    getMovie(props.match.params.id);
-  }, [props.match.params.id]);
+  const deleteReview = (reviewId, index) => {
+    MovieDataService.deleteReview(reviewId, props.user.id)
+      .then((res) => {
+        setMovie((prevState) => {
+          prevState.reviews.splice(index, 1);
+          return {
+            ...prevState,
+          };
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
 
   return (
     <div>
@@ -44,7 +59,9 @@ const Movie = (props) => {
           </Col>
           <Col>
             <Card>
-              <Card.Header as="h3" className="fw-bold">{movie.title}</Card.Header>
+              <Card.Header as="h3" className="fw-bold">
+                {movie.title}
+              </Card.Header>
               <Card.Body>
                 <Card.Text>{movie.plot}</Card.Text>
                 {props.user && (
@@ -80,7 +97,12 @@ const Movie = (props) => {
                           </Link>
                         </Col>
                         <Col>
-                          <Button variant="link">Delete</Button>
+                          <Button
+                            variant="link"
+                            onClick={() => deleteReview(review._id, index)}
+                          >
+                            Delete
+                          </Button>
                         </Col>
                       </Row>
                     )}

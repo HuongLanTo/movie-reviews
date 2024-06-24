@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const backendUrl = process.env.BACKEND_URL;
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 class MovieDataService {
   getAll = (page = 0) => {

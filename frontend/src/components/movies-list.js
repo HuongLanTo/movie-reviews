@@ -24,7 +24,16 @@ const MoviesList = (props) => {
     getRatings();
   }, []);
 
+  useEffect(() => {
+    getMovies();
+  }, [currentPage]);
+
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [currentSearchMode]);
+
   const getMovies = () => {
+    setCurrentSearchMode("");
     MovieDataService.getAll(currentPage)
       .then((res) => {
         setMovies(res.data.movies);
@@ -61,10 +70,12 @@ const MoviesList = (props) => {
   };
 
   const findByTitle = () => {
+    setCurrentSearchMode("findByTitle");
     find(searchTitle, "title");
   };
 
   const findByRating = () => {
+    setCurrentSearchMode("findByRating");
     if (searchRating === "All Ratings") {
       getMovies();
     } else {
@@ -120,8 +131,7 @@ const MoviesList = (props) => {
         </Form>
         <Row>
           {movies.map((movie) => {
-            const poster =
-              movie.poster ? movie.poster : "/images/movie.avif";
+            const poster = movie.poster ? movie.poster : "/images/movie.avif";
             return (
               <Col key={movie._id}>
                 <Card style={{ width: "18rem" }} className="mx-2 my-4">
@@ -137,6 +147,17 @@ const MoviesList = (props) => {
             );
           })}
         </Row>
+        <br />
+        <p className="mb-1">Showing page: {currentPage}</p>
+        <Button
+          variant="link"
+          onClick={() => {
+            setCurrentPage(currentPage + 1);
+          }}
+          className="mb-5"
+        >
+          Get next {entriesPerPage} results
+        </Button>
       </Container>
     </div>
   );

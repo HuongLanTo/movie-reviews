@@ -23,13 +23,23 @@ function App() {
 
   return (
     <div className="App">
-      <Navbar bg="light" expand="lg" className="ps-3 mb-3">
-        <Navbar.Brand>Movie Review</Navbar.Brand>
+      <Navbar bg="light" expand="lg" className="ps-4 mb-3">
+        <Navbar.Brand className="fw-bold">Movies Review</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" className="me-3" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <Link className="px-2" to={"/movies"}>Movies</Link>
-            <span className="px-2">{user ? <a>Logout</a> : <Link to={"/login"}>Login</Link>}</span>
+            <Link className="px-2 text-black text-decoration-none" to={"/movies"}>
+              Movies
+            </Link>
+            <span className="px-2">
+              {user ? (
+                <a onClick={logout} style={{ cursor: "pointer" }}>
+                  Logout
+                </a>
+              ) : (
+                <Link className="text-black text-decoration-none" to={"/login"}>Login</Link>
+              )}
+            </span>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
